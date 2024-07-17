@@ -1,82 +1,115 @@
-# Turborepo starter
+### Payment Gateway System
 
-This is an official starter Turborepo.
+This repository contains a project for building a payment gateway system aimed at facilitating seamless financial transactions. Below is a breakdown of the planned features and functionalities:
 
-## Using this example
+#### Feature Planning
 
-Run the following command:
+- **User Login**
+  - Authentication via email/phone number.
 
-```sh
-npx create-turbo@latest
-```
+- **Bank On-Ramp and Off-Ramp**
+  - Facilitate depositing into and withdrawing from bank accounts.
 
-## What's inside?
+- **Transfers via Phone Number/Name**
+  - Enable transfers between users using identifiers like phone numbers or names.
 
-This Turborepo includes the following packages/apps:
+- **QR Code Scanning**
+  - Support QR code scanning for quick transfers to merchants.
 
-### Apps and Packages
+- **Merchant Login**
+  - Authentication options include Google login.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- **QR Code Generation**
+  - Generate QR codes for merchants to accept payments.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- **Payment Alerts/Notifications**
+  - Merchants receive alerts or notifications upon receiving payments.
 
-### Utilities
+- **Scheduled Payouts**
+  - Automatically transfer merchant balances to their bank accounts every 2 days.
 
-This Turborepo has some additional tools already setup for you:
+#### High-Value Features
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- **Peer-to-Peer Transfers**
+  - Allow users to send money to each other securely.
 
-### Build
+- **Merchant Balance Withdrawal**
+  - Enable merchants to withdraw their accumulated balances to their bank accounts.
 
-To build all apps and packages, run the following command:
+- **User Balance Withdrawal**
+  - Provide users with the option to withdraw their balance back to their bank accounts.
 
-```
-cd my-turborepo
-pnpm build
-```
+- **Bank Webhooks**
+  - Implement webhooks from banks to seamlessly transfer incoming funds.
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+### Readme.md
 
-```
-cd my-turborepo
-pnpm dev
-```
+#### Overview
 
-### Remote Caching
+This repository houses a payment gateway system designed to streamline financial transactions. It offers robust features for both users and merchants, ensuring secure and efficient payments.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+#### Features
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+- **User Management**
+  - Secure login using email/phone authentication.
+  - Bank on-ramp and off-ramp capabilities for easy fund transfers.
+  - Transfers via phone number or recipient name.
 
-```
-cd my-turborepo
-npx turbo login
-```
+- **Merchant Services**
+  - Google login for merchant authentication.
+  - QR code generation for convenient payment acceptance.
+  - Real-time alerts and notifications on received payments.
+  - Automatic bank transfers every 2 days for merchant balances.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+#### Additional Features
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+- **Advanced Functionality**
+  - Peer-to-peer money transfers.
+  - Merchant balance withdrawals.
+  - User balance withdrawals to bank accounts.
+  - Integration of bank webhooks for seamless fund transfers.
 
-```
-npx turbo link
-```
+#### Getting Started
 
-## Useful Links
+To get started with the payment gateway system, follow these steps:
 
-Learn more about the power of Turborepo:
+1. **Clone the Repository**
+   ```
+   git clone https://github.com/your/repository.git
+   cd repository
+   ```
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
-#
+2. **Install Dependencies**
+   ```
+   npm install
+   ```
+
+3. **Configure Environment Variables**
+   - Create a `.env` file based on `.env.example` and fill in your configurations.
+
+4. **Run the Application**
+   ```
+   npm start
+   ```
+
+5. **Access the Application**
+   - Open your web browser and navigate to `http://localhost:3000` (or the specified port).
+
+
+
+## Credit
+
+Developer [Padam Thapa](https://padamthapa.com.np/).
+
+
+
+#### Contributing
+
+Contributions are welcome! To contribute to this project, please fork the repository and submit pull requests to the `develop` branch. Ensure your code adheres to the project's coding standards.
+
+#### License
+
+This project is licensed under the MIT License - see the `LICENSE` file for details.
+
