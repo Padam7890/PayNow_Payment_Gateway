@@ -9,5 +9,10 @@
     },
     "exports": {
         "./client": "./index.ts"
+    },
+    "scripts": {
+        "seed": "ts-node prisma/seed.ts"
+
     }
+   
 }
