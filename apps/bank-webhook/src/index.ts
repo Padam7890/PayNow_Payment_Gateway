@@ -5,12 +5,17 @@ import db from "@repo/db/client";
 
 const app = express();
 
+app.use(express.json())
+app.use(express.urlencoded({
+    extended:true,
+}))
 
-app.get('/neplbankWebhook',async (req, res) => {
+app.post('/neplbankWebhook',async (req, res) => {
     const paymentInformation = {
         token:req.body.token,
         userId:req.body.user_indifier,
         amount:req.body.amount
+
     }
     try {
         await db.$transaction([
@@ -39,12 +44,12 @@ app.get('/neplbankWebhook',async (req, res) => {
             message: "Captured Payment "
         })
     } catch(e) {
+        
         console.error(e);
         res.status(411).json({
             message: "Error while processing webhook"
         })
     }
-
 });
 
 
