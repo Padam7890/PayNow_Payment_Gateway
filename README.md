@@ -44,7 +44,6 @@ This repository contains a project for building a payment gateway system aimed a
 
 ---
 
-### Readme.md
 
 #### Overview
 
@@ -77,7 +76,7 @@ To get started with the payment gateway system, follow these steps:
 
 1. **Clone the Repository**
    ```
-   git clone https://github.com/your/repository.git
+   git clone https://github.com/Padam7890/payNow_Payment_Gateway
    cd repository
    ```
 
