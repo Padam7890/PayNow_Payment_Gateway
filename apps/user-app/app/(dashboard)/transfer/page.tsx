@@ -1,9 +1,11 @@
+
 import prisma from "@repo/db/client";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransaction";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
+import { useEffect } from "react";
 
 async function getBalance() {
     const session = await getServerSession(authOptions);
@@ -23,7 +25,11 @@ async function getOnRampTransactions() {
     const txns = await prisma.onRampTransaction.findMany({
         where: {
             userId: Number(session?.user?.id)
-        }
+        },
+        take:7,
+        orderBy: {
+            startTime: "desc"
+        },
     });
     return txns.map(t => ({
         time: t.startTime,
@@ -35,8 +41,8 @@ async function getOnRampTransactions() {
 
 export default async function() {
     const balance = await getBalance();
-    const transactions = await getOnRampTransactions();
-
+    let transactions = await getOnRampTransactions();
+ 
     return <div className="w-screen">
         <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
             Transfer

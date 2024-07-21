@@ -17,6 +17,19 @@ app.post('/neplbankWebhook',async (req, res) => {
         amount:req.body.amount
 
     }
+
+    // for example you can use the following code
+  const result =   await db.onRampTransaction.findFirst({
+        where: {
+            token: paymentInformation.token
+        }
+    })
+    if(result){
+        return res.status(409).json({
+            message: "Transaction is already processing"
+        })
+    }
+
     try {
         await db.$transaction([
             db.balance.updateMany({

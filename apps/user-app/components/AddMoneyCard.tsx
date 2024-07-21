@@ -6,6 +6,7 @@ import { createOnRamTransaction } from "../app/lib/actions/createTransRam";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { TextInput } from "@repo/ui/textinput";
+import { toast } from "react-toastify";
 
 const SUPPORTED_BANKS = [{
     name: "Np Bank",
@@ -24,14 +25,26 @@ const validationSchema = Yup.object({
 export const AddMoney = () => {
     const formik = useFormik({
         initialValues: {
-            amount: 0,
+            amount: "0",
             provider: SUPPORTED_BANKS[0]?.name || ""
         },
         validationSchema,
         onSubmit: async (values) => {
             const bank = SUPPORTED_BANKS.find(x => x.name === values.provider);
-            await createOnRamTransaction(values.amount * 100, values.provider);
-            window.location.href = bank?.redirectUrl || "";
+            try {
+            const response= await createOnRamTransaction(values.amount, values.provider);
+            toast.success(response?.message)
+            // window.location.href = bank?.redirectUrl || "";
+                
+            } catch (error:any) {
+                toast.error(error)
+                // window.location.href = bank?.redirectUrl || "";
+                
+            }
+            finally{
+                formik.resetForm();
+            }
+            
         }
     });
 

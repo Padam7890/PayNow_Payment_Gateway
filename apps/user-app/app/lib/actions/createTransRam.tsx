@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "../auth"
 import prisma from "@repo/db/client";
 
-export async function createOnRamTransaction(amount: number, provider: string){
+export async function createOnRamTransaction(amount: string, provider: string){
      const session = await getServerSession(authOptions);
      if(!session.user){
         return {
@@ -18,7 +18,7 @@ export async function createOnRamTransaction(amount: number, provider: string){
      await prisma.onRampTransaction.create({
         data:{
             userId: parseInt(userId),
-            amount: amount * 100,
+            amount: parseInt(amount),
             provider: provider,
             status: "Processing",
             startTime: new Date(),

@@ -1,10 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Providers } from "../provider";
 import { AppbarClient } from "../components/AppbarClient";
-
-const inter = Inter({ subsets: ["latin"] });
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const poppins = Poppins({ 
+  subsets: ["latin"] ,
+  display: "swap",
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+});
 
 export const metadata: Metadata = {
   title: "Wallet",
@@ -19,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className}>
-          <div className="min-w-screen min-h-screen bg-[#ebe6e6]">
+        <body className={poppins.className}>
+          <div className="min-w-screen min-h-screen bg-[#F9F9F9]">
             <AppbarClient />
+            <ToastContainer />
+
             {children}
           </div>
         </body>
