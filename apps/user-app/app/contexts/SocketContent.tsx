@@ -1,33 +1,51 @@
-"use client";
+// contexts/SocketContext.tsx
+"use client"; // Add this line at the very top
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import io, { Socket  } from 'socket.io-client';
-
-const SocketContext = createContext<typeof Socket | null>(null);
-
-export const useSocket = () => useContext(SocketContext);
-
+import React, { createContext, useContext, useEffect } from "react";
+import io from "socket.io-client";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import {addSocketNotification} from "../../redux/slices/socketNotificationSlice"
 interface SocketProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  userId: string;
 }
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const [socket, setSocket] = useState<typeof Socket | null>(null);
+const SocketContext = createContext(null);
+
+export const SocketProvider: React.FC<SocketProviderProps> = ({
+  children,
+  userId,
+}) => {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const socketIo: typeof Socket = io('http://localhost:3000');
-    setSocket(socketIo);
-    console.log('Socket connected:', socketIo);
+    const socket = io("http://localhost:3000", {
+      transports: ["websocket"],
+      reconnectionAttempts: 5,
+    });
+
+    socket.emit("join", userId);
+
+    socket.on("receive_money", (data: any) => {
+      toast.info(
+        `You received ${data.amount} from ${data.phone}. Note: ${data.notes}`
+      );
+      dispatch(addSocketNotification({
+        id: Date.now(),
+        message: `You received ${data.amount} from ${data.phone}. Note: ${data.notes}`,
+        createdAt: new Date().toISOString(),
+      }));
+    });
 
     return () => {
-      socketIo.disconnect();
-      console.log('Socket disconnected');
+      socket.disconnect();
     };
-  }, []);
+  }, [userId, dispatch]);
 
   return (
-    <SocketContext.Provider value={socket}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={null}>{children}</SocketContext.Provider>
   );
 };
+
+export const useSocket = () => useContext(SocketContext);

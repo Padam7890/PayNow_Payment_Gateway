@@ -12,6 +12,7 @@ export const getTransactions = async (userId: number, days: number = 7) => {
     orderBy: {
       timestamp: "desc",
     },
+    take:10
   });
   return transactions;
 };
