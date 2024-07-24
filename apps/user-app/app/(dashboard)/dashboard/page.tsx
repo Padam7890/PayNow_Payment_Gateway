@@ -12,8 +12,8 @@ export default function() {
     const { data: session } = useSession();
           
     return <div>
-        
-      {session?.user && <NotificationHandler userId={session.user.id} />}
+
+      {session?.user && <NotificationHandler />}
 
     </div>
 }

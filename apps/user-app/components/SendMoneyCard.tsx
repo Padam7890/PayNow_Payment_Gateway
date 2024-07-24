@@ -58,6 +58,7 @@ const SendMoneyCard = () => {
         if (response.ok) {
           if (socket) {
             socket.emit('send_money', {
+              phone:values.phone,
               fromUserId: session?.data?.user?.id, // Replace with actual user ID
               toUserId: result.toUserId,
               amount: values.amountToSend,
@@ -80,10 +81,10 @@ const SendMoneyCard = () => {
 
   return (
     <div>
-      <form action="" className='max-w-sm mx-auto mt-10' onSubmit={formik.handleSubmit}>
+      <form action="" className='max-w-[100rem] mt-10' onSubmit={formik.handleSubmit}>
         <Center>
-          <Card title='Send Money To Another Account'>
-            <div className='mb-5 mt-4'>
+          <Card   title='Send Money To Another Account'>
+            <div className='mb-5 mt-4 w-[30rem]'>
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient Phone Number</label>
               <input type="tel"
                 onChange={formik.handleChange}

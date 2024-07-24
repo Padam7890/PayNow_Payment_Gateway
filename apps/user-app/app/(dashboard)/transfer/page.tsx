@@ -48,10 +48,16 @@ export default async function() {
     const balance = await getBalance();
     let transactions = await getOnRampTransactions();
  
-    return <div className="w-screen">
-        <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
+    return <div className="w-[100%]">
+        <div className="ml-5">
+        <div className="text-2xl pt-8  font-bold">
             Transfer
         </div>
+        <div>
+            <p className="text-sm">You can load balance from Bank </p>
+        </div>
+        </div>
+      
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
             <div>
                 <AddMoney />
