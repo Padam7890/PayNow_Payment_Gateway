@@ -1,11 +1,18 @@
+import { getServerSession } from "next-auth";
+import { AppbarClient } from "../../components/AppbarClient";
 import { SidebarItem } from "../../components/SidebarItem";
+import { authOptions } from "../lib/auth";
+import { useRouter } from "next/navigation";
 
-export default function Layout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}) {
+ 
   return (
+    <div>
+    <AppbarClient/>
     <div className="flex">
         <div className="w-72 bg-white shadow-md  border-slate-300 min-h-screen mr-4 pt-28">
             <div>
@@ -17,6 +24,7 @@ export default function Layout({
             </div>
         </div>
             {children}
+    </div>
     </div>
   );
 }

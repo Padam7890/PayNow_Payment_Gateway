@@ -3,6 +3,7 @@ import { Button } from "./button";
 interface AppbarProps {
     user?: {
         name?: string | null,
+        id?:string | null,
     },
     // TODO: can u figure out what the type should be here?
     onSignin: any,
@@ -26,7 +27,7 @@ export const Appbar = ({
             {
                 user? 
                 <div className="flex gap-5 items-center justify-center">
-                    <span>Welcome, {user.name? user.name : "Stranger"}
+                    <span>Welcome, {user.id? user.name : "Stranger"}
                     </span>
                     <Button  onClick={onSignout}>Logout</Button>
 
