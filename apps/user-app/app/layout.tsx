@@ -5,6 +5,9 @@ import { Providers } from "../provider";
 import { AppbarClient } from "../components/AppbarClient";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { SocketProvider } from "./contexts/SocketContent";
+import NotificationHandler from "../components/NotificationHandler";
+import { useSession } from "next-auth/react";
 const poppins = Poppins({ 
   subsets: ["latin"] ,
   display: "swap",
@@ -23,16 +26,21 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
+      
       <Providers>
+      <SocketProvider>
         <body className={poppins.className}>
+
           <div className="min-w-screen min-h-screen bg-[#F9F9F9]">
-            <AppbarClient />
             <ToastContainer />
 
             {children}
           </div>
         </body>
+        </SocketProvider>
+
       </Providers>
+
     </html>
   );
 }

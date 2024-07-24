@@ -6,9 +6,14 @@ import { OnRampTransactions } from "../../../components/OnRampTransaction";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { useEffect } from "react";
+import { redirect } from 'next/navigation'
 
 async function getBalance() {
     const session = await getServerSession(authOptions);
+    if (!session?.user) {
+        redirect('/api/auth/signin?csrf=true')
+      } 
+      
     const balance = await prisma.balance.findFirst({
         where: {
             userId: Number(session?.user?.id)
