@@ -31,6 +31,17 @@ export async function p2pTransfer(to: string, amount: number, note: string) {
                 message: "Recipient user not found."
             };
         }
+        //check if user is same person to sending the money
+        const findNumber = await prisma.user.findFirst({
+            where: { id: parseInt(from) }
+        })
+
+        if (findNumber?.number === toUser.number) {
+            return {
+                success: false,
+                message: "You cannot transfer money to yourself."
+            };
+        }
 
         // Find the sender's balance record
         const fromBalance = await prisma.balance.findUnique({

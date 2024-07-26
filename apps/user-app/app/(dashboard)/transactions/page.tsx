@@ -4,7 +4,7 @@ import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 import TransactionHistory from "../../../components/TransactionHistory";
 import { json } from "node:stream/consumers";
-import { getTransactions } from "../../api/helpers/getTransaction";
+import { getTransactions } from "../../lib/actions/getTransaction";
 
 export default async function () {
 
