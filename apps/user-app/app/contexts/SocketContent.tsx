@@ -5,7 +5,8 @@ import React, { createContext, useContext, useEffect } from "react";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {addSocketNotification, loadSocketNotifications} from "../../redux/slices/socketNotificationSlice"
+import {addSocketNotification, fetchUnreadCount} from "../../redux/slices/socketNotificationSlice"
+import { AppDispatch } from "../../redux/store";
 interface SocketProviderProps {
   children: React.ReactNode;
   userId: string;
@@ -17,11 +18,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   children,
   userId,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch:AppDispatch = useDispatch();
 
   useEffect(() => {
-
-    dispatch(loadSocketNotifications());
+    dispatch(fetchUnreadCount())
+    // dispatch((loaddatabaseNotifications()));
     const socket = io("http://localhost:3000", {
       transports: ["websocket"],
       reconnectionAttempts: 5,
@@ -33,18 +34,24 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       toast.info(
         `You received ${data.amount} from ${data.phone}. Note: ${data.notes}`
       );
-      dispatch(addSocketNotification({
-        id: Date.now(),
-        message: `You received ${data.amount} from ${data.phone}. Note: ${data.notes}`,
-        createdAt: new Date().toISOString(),
-      }));
-      //
+      dispatch(fetchUnreadCount())
+
+          //
     });
+   
+
 
     return () => {
       socket.disconnect();
     };
+
   }, [userId, dispatch]);
+  
+
+
+
+
+
 
   return (
     <SocketContext.Provider value={null}>{children}</SocketContext.Provider>
