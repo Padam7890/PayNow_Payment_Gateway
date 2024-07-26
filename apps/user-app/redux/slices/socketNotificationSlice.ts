@@ -8,12 +8,10 @@ interface Notification {
 
 interface SocketNotificationState {
   count: number;
-  notifications: Notification[];
 }
 
 const initialState: SocketNotificationState = {
   count: 0,
-  notifications: [],
 };
 
 const socketNotificationSlice = createSlice({
@@ -21,15 +19,19 @@ const socketNotificationSlice = createSlice({
   initialState,
   reducers: {
     addSocketNotification: (state, action: PayloadAction<Notification>) => {
-      state.notifications.push(action.payload);
       state.count += 1;
+      localStorage.setItem('socketNotificationCount', JSON.stringify(state.count));
     },
     clearSocketNotifications: (state) => {
-      state.notifications = [];
       state.count = 0;
+      localStorage.setItem('socketNotificationCount', JSON.stringify(0));
+    },
+    loadSocketNotifications: (state) => {
+      const count = parseInt(localStorage.getItem('socketNotificationCount') || '0');
+      state.count = count;
     },
   },
 });
 
-export const { addSocketNotification, clearSocketNotifications } = socketNotificationSlice.actions;
+export const { addSocketNotification, clearSocketNotifications, loadSocketNotifications } = socketNotificationSlice.actions;
 export default socketNotificationSlice.reducer;

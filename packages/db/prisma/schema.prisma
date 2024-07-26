@@ -1,70 +1,151 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
+// schema.prisma
 model User {
-  id                Int                 @id @default(autoincrement())
-  email             String?             @unique
-  name              String?
-  number            String              @unique
-  password          String
+  id              Int               @id @default(autoincrement())
+  name            String
+  email           String            @unique
+  password        String
+  role            Role[]
+  tasks           Task[] // Tasks assigned to the user
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  MeetingSchedule MeetingSchedule[]
+  passwordChangedAt        DateTime?
+  passwordResetToken       String?
+  passwordResetTokenExpire DateTime?
+}
+
+model Customer {
+  id                Int      @id @default(autoincrement())
+  name              String
+  email             String   @unique
+  phoneNumber       String?
   address           String?
-  city              String?
-  OnRampTransaction OnRampTransaction[]
-  Balance           Balance[]
-  sentTransfers     p2pTransfer[]       @relation(name: "FromUserRelation")
-  receivedTransfers p2pTransfer[]       @relation(name: "ToUserRelation")
+  socialMediaLinks  String?
+  loanProducts      Json // Can be used to store details about loan products
+  financialPosition Json // Financial details
+  alerts            Alert[] // Alerts associated with the customer
+  reviews           Review[] // Reviews for the customer
+  tasks             Task[] // Tasks related to the customer
+  leads             Lead[] // Leads associated with the customer
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  Loan              Loan[]
 }
 
-model Merchant {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  auth_type AuthType
+model Loan {
+  id           Int        @id @default(autoincrement())
+  amount       Float
+  interestRate Float
+  termInMonths Int
+  startDate    DateTime
+  endDate      DateTime
+  status       LoanStatus
+  customerId   Int
+  customer     Customer   @relation(fields: [customerId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
-enum AuthType {
-  Google
-  Github
+// Breakdown of the Loan Model
+// amount: The principal amount of the loan.
+// interestRate: The interest rate applied to the loan.
+// termInMonths: The duration of the loan in months.
+// startDate: When the loan was issued.
+// endDate: When the loan is scheduled to end.
+// status: The current status of the loan (e.g., Pending, Approved, Rejected, Closed).
+// customerId: A foreign key linking to the Customer model, indicating which customer holds the loan
+
+enum LoanStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CLOSED
 }
 
-model OnRampTransaction {
-  id        Int          @id @default(autoincrement())
-  status    OnRampStatus
-  token     String       @unique
-  provider  String
-  amount    Int
-  startTime DateTime
-  userId    Int
-  user      User         @relation(fields: [userId], references: [id])
-}
-
-model Balance {
-  id     Int  @id @default(autoincrement())
-  userId Int  @unique
-  amount Int
-  locked Int
-  user   User @relation(fields: [userId], references: [id])
-}
-
-model p2pTransfer {
+model Alert {
   id         Int      @id @default(autoincrement())
-  amount     Int
-  timestamp  DateTime
-  notes      String
-  fromUserId Int
-  fromUser   User     @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])
-  toUserId   Int
-  toUser     User     @relation(name: "ToUserRelation", fields: [toUserId], references: [id])
+  message    String
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+  alertType  String // e.g., "High-Risk", "Review"
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
-enum OnRampStatus {
-  Success
-  Failure
-  Processing
+model Review {
+  id            Int      @id @default(autoincrement())
+  customerId    Int
+  customer      Customer @relation(fields: [customerId], references: [id])
+  reviewDate    DateTime
+  reviewDetails String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  status      String // e.g., "Pending", "Completed"
+  dueDate     DateTime
+  customerId  Int
+  customer    Customer @relation(fields: [customerId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
+}
+
+model Lead {
+  id         Int       @id @default(autoincrement())
+  name       String
+  status     String // e.g., "New", "In Progress", "Closed"
+  source     String
+  customerId Int?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+
+
+model Role {
+  id          Int              @id @default(autoincrement())
+  name        RoleName
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id         Int              @id @default(autoincrement())
+  permission String           @unique
+  slug       String           @unique
+  roles      RolePermission[]
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+  Role         Role       @relation(fields: [roleId], references: [id])
+  Permission   Permission @relation(fields: [permissionId], references: [id])
+}
+
+enum RoleName {
+  ADMIN
+  BROKER_AGENT
+  USER
+}
+
+model MeetingSchedule {
+  id            Int      @id @default(autoincrement())
+  title         String
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+  scheduledDate DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

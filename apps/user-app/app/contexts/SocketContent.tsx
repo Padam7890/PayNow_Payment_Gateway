@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect } from "react";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {addSocketNotification} from "../../redux/slices/socketNotificationSlice"
+import {addSocketNotification, loadSocketNotifications} from "../../redux/slices/socketNotificationSlice"
 interface SocketProviderProps {
   children: React.ReactNode;
   userId: string;
@@ -20,6 +20,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+
+    dispatch(loadSocketNotifications());
     const socket = io("http://localhost:3000", {
       transports: ["websocket"],
       reconnectionAttempts: 5,
@@ -36,6 +38,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         message: `You received ${data.amount} from ${data.phone}. Note: ${data.notes}`,
         createdAt: new Date().toISOString(),
       }));
+      //
     });
 
     return () => {

@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { TextInput } from "@repo/ui/textinput";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const SUPPORTED_BANKS = [{
     name: "Np Bank",
@@ -23,6 +24,7 @@ const validationSchema = Yup.object({
 
 
 export const AddMoney = () => {
+    const [loading, setLoading] = useState<boolean>(false)
     const formik = useFormik({
         initialValues: {
             amount: "0",
@@ -32,6 +34,7 @@ export const AddMoney = () => {
         onSubmit: async (values) => {
             const bank = SUPPORTED_BANKS.find(x => x.name === values.provider);
             try {
+            setLoading(true);
             const response= await createOnRamTransaction(values.amount, values.provider);
             toast.success(response?.message)
             // window.location.href = bank?.redirectUrl || "";
@@ -42,6 +45,7 @@ export const AddMoney = () => {
                 
             }
             finally{
+                setLoading(false);
                 formik.resetForm();
             }
             
@@ -81,7 +85,7 @@ export const AddMoney = () => {
 
                 <div className="flex justify-center pt-4">
                     <Button type="submit">
-                        Add Money
+                        {loading ? "Loading Money" : "Add Money"}
                     </Button>
                 </div>
             </form>

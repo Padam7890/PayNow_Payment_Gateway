@@ -1,6 +1,6 @@
 "use client";
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { number, object, string } from 'yup';
 import { Card } from "@repo/ui/card";
 import { Center } from "@repo/ui/center";
@@ -8,22 +8,20 @@ import { Button } from '@repo/ui/button';
 import { toast } from 'react-toastify';
 import io from 'socket.io-client';
 import { getSession, useSession } from 'next-auth/react';
-import { authOptions } from '../app/lib/auth';
+import { findNonSerializableValue } from '@reduxjs/toolkit';
 
 const SendMoneyCard = () => {
-  const [socket, setSocket] = React.useState<any>(null);
-  const [userId, setUserId] = React.useState<any>(null);
+  const [socket, setSocket] = useState<any>(null);
+  const[loading, setLoading] = useState<boolean>(false);
+
   const session = useSession();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const socketIo = io('http://localhost:3000', {
       transports: ['websocket'],
       reconnectionAttempts: 5
     });
-
-
     setSocket(socketIo);
-
     return () => {
       socketIo.disconnect();
     };
@@ -45,6 +43,7 @@ const SendMoneyCard = () => {
     onSubmit: async (values) => {
       console.log('Form values:', values);
       try {
+        setLoading(true);
         const response = await fetch('/api/transfer', {
           method: 'POST',
           headers: {
@@ -52,7 +51,6 @@ const SendMoneyCard = () => {
           },
           body: JSON.stringify(values),
         });
-
         const result = await response.json();
 
         if (response.ok) {
@@ -74,7 +72,11 @@ const SendMoneyCard = () => {
           throw new Error(result.message || 'Transfer failed');
         }
       } catch (error: any) {
+        setLoading(false)
         toast.error(error.message || 'An error occurred.');
+      }
+      finally{
+        setLoading(false);
       }
     }
   });
@@ -83,7 +85,7 @@ const SendMoneyCard = () => {
     <div>
       <form action="" className='max-w-[100rem] mt-10' onSubmit={formik.handleSubmit}>
         <Center>
-          <Card   title='Send Money To Another Account'>
+          <Card   title='Send Money To PaY Now Account'>
             <div className='mb-5 mt-4 w-[30rem]'>
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient Phone Number</label>
               <input type="tel"
@@ -121,7 +123,7 @@ const SendMoneyCard = () => {
 
             <div className='mb-5 mt-4'>
               <Button type='submit'>
-                Send
+                {loading? 'Wait Sending Money ...' : 'Send'}
               </Button>
             </div>
           </Card>
