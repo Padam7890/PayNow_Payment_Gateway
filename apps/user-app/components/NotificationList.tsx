@@ -19,7 +19,7 @@ const NotificationList = ({ notificationLists }: any) => {
     };
     loadNotifications();
 
-  }, [notificationList]);
+  }, []);
 
   const handleMarkNotificationAsRead = async (id: number) => {
     const success = await markNotificationAsRead(id);
