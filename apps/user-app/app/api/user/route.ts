@@ -11,7 +11,7 @@ export const GET = async () => {
                 user: session.user
             })
         }
-        
+
     } catch (error) {
         return NextResponse.json({
             message: "You are not logged in"

@@ -2,9 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getNotifications, markNotificationAsRead } from "../../lib/actions/notification";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth"; // Ensure you have this import if authOptions is defined in this file
-
-
-
   
 // Function to handle marking notifications as read
 export async function PUT(req: NextRequest) {
