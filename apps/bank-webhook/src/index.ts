@@ -5,17 +5,17 @@ import db from "@repo/db/client";
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
+
 app.use(express.urlencoded({
     extended:true,
-}))
+}));
 
 app.post('/neplbankWebhook',async (req, res) => {
     const paymentInformation = {
         token:req.body.token,
         userId:req.body.user_indifier,
         amount:req.body.amount
-
     }
 
     // for example you can use the following code
@@ -38,7 +38,6 @@ app.post('/neplbankWebhook',async (req, res) => {
                 },
                 data: {
                     amount: {
-                        // You can also get this from your DB
                         increment: Number(paymentInformation.amount)
                     }
                 }
