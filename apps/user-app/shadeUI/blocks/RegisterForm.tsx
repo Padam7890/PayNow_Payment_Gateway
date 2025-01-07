@@ -26,29 +26,33 @@ export default function SignupForm({ redirectLinks }: Props) {
     validationSchema: object({
       phone: string().required("Phone Number is required").min(10, "Phone number must be 10 digits"),
       password: string().required("Password is required"),
-      confirmPassword: string().required("Confirm Password is required").oneOf([ref(('password'))], "Passwords must match"),
+      confirmPassword: string().required("Confirm Password is required").oneOf([ref('password')], "Passwords must match"),
       email: string().email("Invalid email address").required("Email Required"),
       city: string(),
       address: string(),
       name: string().required("Name is required"),
 
     }),
-    onSubmit: async (values:any) => {
-        const {phone, password, name, city, address, email } = values;
-         const response = await fetch('/api/auth',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ phone, password, name, city, address, email }),
-         })
-         const result = await response.json();
-         if (response.ok) {
-            redirectLinks.signin();
-         } else {
-             toast.error(result.message)
-         }
-       
+    onSubmit: async (values: any) => {
+      try {
+        const { phone, password, name, city, address, email } = values;
+        const response = await fetch('/api/auth', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ phone, password, name, city, address, email }),
+        });
+        const result = await response.json();
+        if (response.ok) {
+          redirectLinks.signin();
+        } else {
+          toast.error(result.message);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("An error occurred while signing up. Please try again later.");
+      }
     },
   });
 
@@ -57,11 +61,11 @@ export default function SignupForm({ redirectLinks }: Props) {
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>Enter Required <span className=" text-red-500 font-bold">*</span> fields to create an account.</CardDescription>
+          <CardDescription>Enter Required <span className="text-red-500 font-bold">*</span> fields to create an account.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-            <Label htmlFor="name">Name <span className=" text-red-500 font-bold">*</span> </Label>
+          <div className="grid gap-2">
+            <Label htmlFor="name">Name <span className="text-red-500 font-bold">*</span></Label>
             <Input
               id="name"
               type="text"
@@ -70,12 +74,12 @@ export default function SignupForm({ redirectLinks }: Props) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik?.touched?.name && formik?.errors?.name && (
-              <div className="text-red-500 text-sm mt-2">{formik?.errors?.name}</div>
+            {formik.touched.name && formik.errors.name && (
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.name)}</div>
             )}
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="email">Email <span className=" text-red-500 font-bold">*</span> </Label>
+            <Label htmlFor="email">Email <span className="text-red-500 font-bold">*</span></Label>
             <Input
               id="email"
               type="email"
@@ -85,13 +89,11 @@ export default function SignupForm({ redirectLinks }: Props) {
               onBlur={formik.handleBlur}
             />
             {formik.touched.email && formik.errors.email && (
-              <div className="text-red-500 text-sm mt-2">{formik.errors.email}</div>
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.email)}</div>
             )}
           </div>
-
-
           <div className="grid gap-2">
-            <Label htmlFor="phone">Phone Number <span className=" text-red-500 font-bold">*</span> </Label>
+            <Label htmlFor="phone">Phone Number <span className="text-red-500 font-bold">*</span></Label>
             <Input
               id="phone"
               type="text"
@@ -101,7 +103,7 @@ export default function SignupForm({ redirectLinks }: Props) {
               onBlur={formik.handleBlur}
             />
             {formik.touched.phone && formik.errors.phone && (
-              <div className="text-red-500 text-sm mt-2">{formik?.errors?.phone}</div>
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.phone)}</div>
             )}
           </div>
           <div className="grid gap-2">
@@ -115,10 +117,9 @@ export default function SignupForm({ redirectLinks }: Props) {
               onBlur={formik.handleBlur}
             />
             {formik.touched.city && formik.errors.city && (
-              <div className="text-red-500 text-sm mt-2">{formik.errors.city}</div>
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.city)}</div>
             )}
           </div>
-
           <div className="grid gap-2">
             <Label htmlFor="address">Address</Label>
             <Input
@@ -130,12 +131,11 @@ export default function SignupForm({ redirectLinks }: Props) {
               onBlur={formik.handleBlur}
             />
             {formik.touched.address && formik.errors.address && (
-              <div className="text-red-500 text-sm mt-2">{formik.errors.address}</div>
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.address)}</div>
             )}
           </div>
-
           <div className="grid gap-2">
-            <Label htmlFor="password">Password <span className=" text-red-500 font-bold">*</span> </Label>
+            <Label htmlFor="password">Password <span className="text-red-500 font-bold">*</span></Label>
             <Input
               id="password"
               type="password"
@@ -145,11 +145,11 @@ export default function SignupForm({ redirectLinks }: Props) {
               onBlur={formik.handleBlur}
             />
             {formik.touched.password && formik.errors.password && (
-              <div className="text-red-500 text-sm mt-2">{formik.errors.password}</div>
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.password)}</div>
             )}
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="confirmPassword">Confirm Password <span className=" text-red-500 font-bold">*</span> </Label>
+            <Label htmlFor="confirmPassword">Confirm Password <span className="text-red-500 font-bold">*</span></Label>
             <Input
               id="confirmPassword"
               type="password"
@@ -159,13 +159,9 @@ export default function SignupForm({ redirectLinks }: Props) {
               onBlur={formik.handleBlur}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-              <div className="text-red-500 text-sm mt-2">{formik.errors.confirmPassword}</div>
+              <div className="text-red-500 text-sm mt-2">{String(formik.errors.confirmPassword)}</div>
             )}
           </div>
-          
-
-
-
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full">

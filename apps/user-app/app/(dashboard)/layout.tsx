@@ -25,7 +25,7 @@ export default async function Layout({
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden  border-r bg-muted/40 md:block">
         <div className="flex fixed h-full max-h-screen flex-col gap-2">
-          <SidebarHeader notificationUrl={notificationUrl} userId={session?.user?.id} logoName = {"PaY Now"} />
+          <SidebarHeader notificationUrl={notificationUrl}  logoName = {"PaY Now"} />
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Sidebar menuItems = {menuItems} />

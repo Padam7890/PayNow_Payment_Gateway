@@ -9,7 +9,6 @@ export const fetchNotifications = async () => {
       return res.json();
     } catch (error) {
       console.error('Error fetching notifications:', error);
-      throw error; // Rethrow to allow higher-level handling if necessary
     }
   };
   

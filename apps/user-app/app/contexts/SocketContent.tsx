@@ -27,20 +27,21 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       transports: ["websocket"],
       reconnectionAttempts: 5,
     });
-
     socket.emit("join", userId);
 
     socket.on("receive_money", (data: any) => {
       toast.info(
         `You received ${data.amount} from ${data.phone}. Note: ${data.notes}`
       );
+
+      //add socket for requestin money to another account
+      socket.on("request_money", (data: any) => {
+        
+      }); 
+
+
       dispatch(fetchUnreadCount())
-
-          //
     });
-   
-
-
     return () => {
       socket.disconnect();
     };

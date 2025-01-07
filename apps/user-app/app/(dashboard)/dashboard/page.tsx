@@ -5,8 +5,10 @@ interface UnreadCountResponse {
 }
 
 export default function NotificationCount() {
+ 
 
 
+  console.log("padan")
   return (
     <div>
     </div>
