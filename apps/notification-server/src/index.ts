@@ -32,7 +32,6 @@ io.on('connection', (socket) => {
 
   socket.on('send_money', async (data) => {
     console.log("Received data on 'send_money':", data);
-
     const { fromUserId, toUserId, amount, notes, timestamp, phone } = data;
 
     console.log(`Sending money from ${fromUserId} to ${toUserId}. Amount: ${amount}, Notes: ${notes}`);

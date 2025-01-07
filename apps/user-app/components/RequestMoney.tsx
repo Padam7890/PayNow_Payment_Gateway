@@ -13,12 +13,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "../shadeUI/components/ui/tabs";
+import { RequestMoneyFromUser } from "../app/lib/actions/requestMoney";
 
 const RequestMoney = () => {
   const formik = useFormik({
     initialValues: {
-      amount: "",
-      phone: "",
+      amount: 0,
+      phone: 0,
       messages: "",
     },
     validationSchema: object({
@@ -30,8 +31,8 @@ const RequestMoney = () => {
       messages: string().required("Message is required"),
     }),
     onSubmit: (values) => {
-      // Your form submission logic goes here
       console.log(values);
+      RequestMoneyFromUser(values)
     },
   });
 
@@ -42,6 +43,7 @@ const RequestMoney = () => {
           <Card className="w-full xl:w-1/3 flex px-6 ">
             <form onSubmit={formik.handleSubmit} className="w-full">
               <TextInput
+                type={'number'}
                 label="Amount"
                 placeholder="Amount"
                 onChange={formik.handleChange}
@@ -56,6 +58,7 @@ const RequestMoney = () => {
               ) : null}
               <div className="mt-5">
                 <TextInput
+                  type={'number'}
                   label="Request From"
                   placeholder="Phone Number"
                   onChange={formik.handleChange}
