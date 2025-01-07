@@ -14,11 +14,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload; // Directly assign the payload to user.
+      state.user = action.payload;
     },
     clearUser: (state) => {
-      state.user = null; // Set user to null when clearing.
+      state.user = null;
     },
+    
   },
 });
 
